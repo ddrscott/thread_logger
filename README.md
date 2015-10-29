@@ -1,41 +1,57 @@
-# ThreadLogger
+# Use with standard Ruby Logger
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/thread_logger`. To experiment with that code, run `bin/console` for an interactive prompt.
+```
+# Set how many entries to keep
+ThreadLogger.config.max_entries = 5
 
-TODO: Delete this and the text above, and describe your gem
+# Hijack the standard logger instance
+logger = ThreadLogger.hijack(Logger.new($stdout))
 
-## Installation
+# Do some logging
+('a'..'z').each{|l| logger.info l}
+=> 
+I, [2015-10-29T14:56:59.242216 #35557]  INFO -- : a
+I, [2015-10-29T14:56:59.242265 #35557]  INFO -- : b
+...
+I, [2015-10-29T14:56:59.242608 #35557]  INFO -- : z
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'thread_logger'
+# Get the history
+logger.history.to_a
+=> 
+["I, [2015-10-29T14:57:51.297326 #36535]  INFO -- : v\n",
+ "I, [2015-10-29T14:57:51.297338 #36535]  INFO -- : w\n",
+ "I, [2015-10-29T14:57:51.297349 #36535]  INFO -- : x\n",
+ "I, [2015-10-29T14:57:51.297361 #36535]  INFO -- : y\n",
+ "I, [2015-10-29T14:57:51.297373 #36535]  INFO -- : z\n"]
 ```
 
-And then execute:
 
-    $ bundle
+# Use with Log4r
+```
+# Set how many entries to keep
+ThreadLogger.config.max_entries = 5
 
-Or install it yourself as:
+require 'log4r'
 
-    $ gem install thread_logger
+logger = Log4r::Logger.new 'mylog'
+outputter = Log4r::Outputter.stdout
+logger.outputters = outputter
 
-## Usage
+logger = ThreadLogger.hijack(logger, outputter: outputter)
 
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/thread_logger.
-
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
+# do some logging
+('a'..'z').each{|l| logger.info l}
+ INFO mylog: a
+ INFO mylog: b
+ INFO mylog: c
+ ...
+ INFO mylog: z
+ 
+# get the history
+logger.history.to_a
+=> [" INFO mylog: v\n",
+ " INFO mylog: w\n",
+ " INFO mylog: x\n",
+ " INFO mylog: y\n",
+ " INFO mylog: z\n"]
+```
