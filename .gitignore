@@ -7,3 +7,8 @@
 /pkg/
 /spec/reports/
 /tmp/
+
+# project files
+.idea
+*.iml
+.project
