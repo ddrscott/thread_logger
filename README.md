@@ -1,3 +1,33 @@
+# Overview
+This is a logger wrapper that keeps in memory a ring buffer of log lines
+isolated to the `Thread.current`.
+The main use of this is to have access to log history for when exception
+happen.
+
+## Example usefulness
+```
+ThreadLogger.config.max_entries = 5
+ThreadLogger.config.add_filter(/starting purchase/) -> {|history, text|
+   history.clear
+}
+
+def buy(isbn)
+  logger.info 'starting purchase'
+  
+  api.buy(isbn)
+  
+rescue
+  Mailman.support($!, log: logger.history.to_a.join)
+end
+```
+
+# Features
+
+## As a Developer
+[x] general log capture with thread friendly ring buffer
+[ ] clear based on matchers
+
+
 # Use with standard Ruby Logger
 
 ```
