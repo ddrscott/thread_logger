@@ -17,7 +17,7 @@ def buy(isbn)
   api.buy(isbn)
   
 rescue
-  Mailman.support($!, log: logger.history.to_a.join)
+  Mailman.support($!, log: logger.history.to_a.join).deliver
 end
 ```
 
