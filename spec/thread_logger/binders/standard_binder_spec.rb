@@ -47,6 +47,23 @@ module ThreadLogger
 
         expect(hijacked.history.to_a).to eq([])
       end
+
+      it 'should isolate history to current thread' do
+        results = {}
+
+        threads = [
+            Thread.new { ('a'..'c').each{|l| hijacked.info(l)}; results[Thread.current] = hijacked.history },
+            Thread.new { ('x'..'z').each{|l| hijacked.info(l)}; results[Thread.current] = hijacked.history }
+        ]
+
+        threads.each { |thr| thr.join }
+
+        expect(results[threads[0]].size).to eq(3)
+        expect(results[threads[0]].to_a.join).to match(/a\n.*b\n.*c\n/m)
+
+        expect(results[threads[1]].size).to eq(3)
+        expect(results[threads[1]].to_a.join).to match(/x\n.*y\n.*z\n/m)
+      end
     end
   end
 end
