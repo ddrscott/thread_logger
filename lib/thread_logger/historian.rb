@@ -23,10 +23,9 @@ module ThreadLogger
     alias <<   add
     alias push add
 
-    # delegate to log
-    def each(&block)
-      @logs.each(&block)
+    # pass everything else to @logs
+    def method_missing(meth_name, *args, &block)
+      @logs.__send__(meth_name, *args, &block)
     end
-
   end
 end

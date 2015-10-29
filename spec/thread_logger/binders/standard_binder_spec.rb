@@ -42,6 +42,10 @@ module ThreadLogger
         expect(as_array[2]).to match(/three/)
         expect(as_array[3]).to match(/four/)
         expect(as_array[4]).to match(/five/)
+
+        hijacked.history.clear
+
+        expect(hijacked.history.to_a).to eq([])
       end
     end
   end
