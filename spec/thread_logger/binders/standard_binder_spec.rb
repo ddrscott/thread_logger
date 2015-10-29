@@ -3,7 +3,7 @@ require 'spec_helper'
 
 module ThreadLogger
   module Bindings
-    describe ThreadLogger::Binders::StdLogger do
+    describe ThreadLogger::Binders::StandardBinder do
       require 'logger'
 
       before do
@@ -18,7 +18,7 @@ module ThreadLogger
 
         klass = ThreadLogger.detect_binder_class(std_logger)
 
-        expect(klass).to eq(ThreadLogger::Binders::StdLogger)
+        expect(klass).to eq(ThreadLogger::Binders::StandardBinder)
       end
 
       it 'should respond to history after hijack' do

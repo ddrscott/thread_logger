@@ -19,9 +19,9 @@ module ThreadLogger
   end
 
   # @return [Object] original logger instance
-  def self.hijack(logger)
+  def self.hijack(logger, options={})
     hijacker = ThreadLogger::Hijacker.new
-    hijacker.hijack(logger)
+    hijacker.hijack(logger, options)
     logger
   end
 

@@ -4,7 +4,7 @@ module ThreadLogger
 
   class Hijacker
 
-    def hijack(logger)
+    def hijack(logger, options={})
 
       binder = ThreadLogger.detect_binder_class(logger)
 
@@ -13,9 +13,8 @@ module ThreadLogger
         instance = binder.new
 
         logger.extend(ThreadLogger::HistoryMixin)
-        logger.history = Historian.new
 
-        instance.pipe_appender(logger)
+        instance.pipe_appender(logger, options)
 
         logger
       else

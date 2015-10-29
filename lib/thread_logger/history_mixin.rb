@@ -8,7 +8,7 @@ module ThreadLogger
     end
 
     def history
-      Thread.current[THREAD_VAR]
+      Thread.current[THREAD_VAR] ||= Historian.new
     end
   end
 end
