@@ -1,17 +1,15 @@
+require 'bcat/ansi'
+
 module ThreadLogger
   class Historian
     attr_reader :logs
 
-    def initialize
-      if config.max_entries
-        @logs = RingBuffer.new(config.max_entries)
+    def initialize(max_entries=ThreadLogger.config.max_entries)
+      if max_entries
+        @logs = RingBuffer.new(max_entries)
       else
         @logs = []
       end
-    end
-
-    def config
-      ThreadLogger.config
     end
 
     def add(text)
@@ -29,5 +27,18 @@ module ThreadLogger
     def respond_to_missing?(*args)
       @logs.respond_to?(*args)
     end
+
+    def to_text
+      @logs.join
+    end
+
+    def to_html
+      Bcat::ANSI.new(to_text).to_html
+    end
+
+    def to_s
+      "[size: #{size}] #{last}"
+    end
+
   end
 end

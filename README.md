@@ -4,20 +4,39 @@ isolated to the `Thread.current`.
 The main use of this is to have access to log history for when exception
 happen.
 
-## Example usefulness
-```
-ThreadLogger.config.max_entries = 5
-ThreadLogger.config.add_filter(/starting purchase/) -> {|history, text|
-   history.clear
-}
+## Example Use
+```ruby
+module Main
+  class Application < Rails::Application
 
-def buy(isbn)
-  logger.info 'starting purchase'
-  
-  api.buy(isbn)
-  
-rescue
-  Mailman.support($!, log: logger.history.to_a.join).deliver
+    ThreadLogger.config.max_entries = 100
+
+    # hijack a logger that's already configured
+    config.logger = ThreadLogger.hijack(config.logger)
+
+  end
+
+  class ApplicationController < ActionController::Base
+
+    before_filter do
+      logger.history.clear
+    end
+
+    rescue_from Exception do |exception|
+      send_error exception
+      raise exception
+    end
+
+    def send_error(exception)
+      logger.error(exception)
+
+      # convert history to text
+      Mailman.support(exception, log: logger.history.to_text).deliver
+
+      # convert history to HTML
+      Mailman.support(exception, html: logger.history.to_html).deliver
+    end
+  end
 end
 ```
 
@@ -29,6 +48,7 @@ end
 [ ] clear history based on matchers
 [ ] limit RingBuffer based on memory consumption
 [x] default max entries so we don't run out of memory for anyone that forgets
+[x] convert log to HTML
 
 
 # Use with standard Ruby Logger

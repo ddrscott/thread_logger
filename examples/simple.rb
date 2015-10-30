@@ -21,7 +21,12 @@ module Main
 
     def send_error(exception)
       logger.error(exception)
-      Mailman.support(exception, log: logger.history).deliver
+
+      # convert history to text
+      Mailman.support(exception, log: logger.history.to_text).deliver
+
+      # convert history to HTML
+      Mailman.support(exception, html: logger.history.to_html).deliver
     end
   end
 end

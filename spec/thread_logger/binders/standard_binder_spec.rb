@@ -59,10 +59,10 @@ module ThreadLogger
         threads.each { |thr| thr.join }
 
         expect(results[threads[0]].size).to eq(3)
-        expect(results[threads[0]].to_a.join).to match(/a\n.*b\n.*c\n/m)
+        expect(results[threads[0]].to_text).to match(/a\n.*b\n.*c\n/m)
 
         expect(results[threads[1]].size).to eq(3)
-        expect(results[threads[1]].to_a.join).to match(/x\n.*y\n.*z\n/m)
+        expect(results[threads[1]].to_text).to match(/x\n.*y\n.*z\n/m)
       end
     end
   end
