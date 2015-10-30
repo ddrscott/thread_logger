@@ -24,8 +24,11 @@ end
 # Features
 
 ## As a Developer
+[x] use public_send instead of __send__
 [x] general log capture with thread friendly ring buffer
-[ ] clear based on matchers
+[ ] clear history based on matchers
+[ ] limit RingBuffer based on memory consumption
+[x] default max entries so we don't run out of memory for anyone that forgets
 
 
 # Use with standard Ruby Logger

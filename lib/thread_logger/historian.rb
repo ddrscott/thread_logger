@@ -1,7 +1,5 @@
 module ThreadLogger
   class Historian
-    include Enumerable
-
     attr_reader :logs
 
     def initialize
@@ -25,7 +23,11 @@ module ThreadLogger
 
     # pass everything else to @logs
     def method_missing(meth_name, *args, &block)
-      @logs.__send__(meth_name, *args, &block)
+      @logs.public_send(meth_name, *args, &block)
+    end
+
+    def respond_to_missing?(*args)
+      @logs.respond_to?(*args)
     end
   end
 end
