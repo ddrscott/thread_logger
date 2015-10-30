@@ -1,4 +1,4 @@
-module Main
+module RailsApp
   class Application < Rails::Application
 
     ThreadLogger.config.max_entries = 100

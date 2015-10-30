@@ -5,6 +5,7 @@ The main use of this is to have access to log history for when exception
 happen.
 
 ## Example Use
+
 ```ruby
 module Main
   class Application < Rails::Application
@@ -39,6 +40,8 @@ module Main
   end
 end
 ```
+
+look in /examples directory for more examples 
 
 # Features
 
