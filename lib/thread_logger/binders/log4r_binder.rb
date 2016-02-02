@@ -9,17 +9,28 @@ module ThreadLogger
       # Logger should setup a HistorianOutputter
       def pipe_appender(history_logger, options)
 
-        outputter = options[:outputter] || raise(':outputter is not found in options!')
+        outputter = best_outputter(history_logger, options)
 
-        found = history_logger.outputters.detect{|d| d == outputter}
-
-        unless found
+        unless outputter
           raise "#{outputter} in options not found in logger's list of outputters: #{history_logger.outputters.inpsect}"
         end
 
         add_historian_outputter(history_logger, outputter.formatter)
 
         history_logger
+      end
+
+      def best_outputter(history_logger, options)
+        outputter = options[:outputter]
+        unless outputter
+          history_logger.info(':outputter option not specified. hijacking the first outputter it finds.')
+          outputter = history_logger.outputters.first
+          unless outputter
+            history_logger.error('No outputters associated with the logger. Setup the logging outputters first before hijacking!')
+          end
+        end
+
+        history_logger.outputters.detect { |d| d == outputter }
       end
 
       def add_historian_outputter(history_logger, formatter)

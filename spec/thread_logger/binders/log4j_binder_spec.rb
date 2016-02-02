@@ -21,6 +21,8 @@ module ThreadLogger
 
       let(:hijacked) { ThreadLogger.hijack(logger, outputter: outputter) }
 
+      let(:hijacked_no_options) { ThreadLogger.hijack(logger) }
+
       it 'should be detectable' do
 
         klass = ThreadLogger.detect_binder_class(logger)
@@ -49,6 +51,10 @@ module ThreadLogger
         expect(as_array[2]).to match(/three/)
         expect(as_array[3]).to match(/four/)
         expect(as_array[4]).to match(/five/)
+      end
+
+      it 'should hijack first outputter' do
+        expect(hijacked_no_options).to respond_to(:history)
       end
     end
   end
