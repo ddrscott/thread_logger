@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Scott Pierce']
   spec.email         = ['scott.pierce@centro.net']
 
-  spec.summary       = %q{Keep a history of the last X log entries automatically}
-  spec.description   = %q{}
+  spec.summary       = 'Keep a history of the last X log entries automatically'
+  spec.description   = ''
   spec.homepage      = 'http://stash.dev.sitescout.ad/projects/CEN/repos/jobster'
   spec.license       = 'MIT'
 
