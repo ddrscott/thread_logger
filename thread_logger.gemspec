@@ -9,15 +9,15 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Scott Pierce']
   spec.email         = ['scott.pierce@centro.net']
 
-  spec.summary       = %q{Keep a history of the last X log entries automatically}
-  spec.description   = %q{}
+  spec.summary       = 'Keep a history of the last X log entries automatically'
+  spec.description   = ''
   spec.homepage      = 'http://stash.dev.sitescout.ad/projects/CEN/repos/jobster'
   spec.license       = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
   # delete this section to allow pushing this gem to any host.
   if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = 'http://gems.transis.net'
+    spec.metadata['allowed_push_host'] = "https://gems.ourcentro.net"
   else
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
   end
